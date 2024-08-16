@@ -3,6 +3,14 @@
 #include <dust.h>
 #include <ds_vulkan.h>
 
+///////////////////////////////////////////////////////////
+/// TODO:
+///////////////////////////////////////////////////////////
+///
+/// Implement some kind of memory managment early on ...
+///
+///////////////////////////////////////////////////////////
+
 
 Dust::Dust(const char *title_, int windowWidth_, int windowHeight_, bool fullscreen_) {
     windowWidth = windowWidth_;
@@ -15,7 +23,7 @@ Dust::Dust(const char *title_, int windowWidth_, int windowHeight_, bool fullscr
 
     // TODO: decide how to handle small allocations
     // for now we are using the standar new and delete
-    vulkan = new VkContext(title_);
+    vulkan = new VkContext(title_, window);
 }
 
 Dust::~Dust() {
