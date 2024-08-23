@@ -4,9 +4,7 @@
 #define DUST_API __declspec(dllexport)
 
 struct GLFWwindow;
-class VkContext;
 
-#include <vulkan/vulkan.h>
 #include <glm/glm.hpp>
 
 class DUST_API Dust {
@@ -22,7 +20,6 @@ private:
 	GLFWwindow *window { nullptr };
 	int windowWidth { 0 };
 	int windowHeight { 0 };
-	VkContext *vulkan { nullptr };
 };
 
 #endif //DUST_LIBRARY_H

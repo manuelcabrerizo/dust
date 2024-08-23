@@ -1,33 +1,28 @@
-#define GLFW_INCLUDE_VULKAN
+#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 #include <dust.h>
-#include <ds_vulkan.h>
-
-///////////////////////////////////////////////////////////
-/// TODO:
-///////////////////////////////////////////////////////////
-///
-/// Implement some kind of memory managment early on ...
-///
-///////////////////////////////////////////////////////////
-
+#include <iostream>
 
 Dust::Dust(const char *title_, int windowWidth_, int windowHeight_, bool fullscreen_) {
     windowWidth = windowWidth_;
     windowHeight = windowHeight_;
 
     glfwInit();
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     window = glfwCreateWindow(windowWidth, windowHeight, title_, nullptr, nullptr);
+    glfwMakeContextCurrent(window);
 
-    // TODO: decide how to handle small allocations
-    // for now we are using the standar new and delete
-    vulkan = new VkContext(title_, window);
+    gl3wInit();
+    if(gl3wIsSupported(4, 5)) {
+        std::cout << "Opengl 4.5 supported\n";
+    }
+    else {
+        throw std::runtime_error("Opengl 4.5 not supported");
+    }
+
+
 }
 
 Dust::~Dust() {
-    delete vulkan;
     glfwDestroyWindow(window);
     glfwTerminate();
 }
