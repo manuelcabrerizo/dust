@@ -7,19 +7,23 @@ struct GLFWwindow;
 
 #include <glm/glm.hpp>
 
-class DUST_API Dust {
-public:
-	Dust(const char *title, int windowWidth, int windowHeight, bool fullscreen);
-	virtual ~Dust();
-	void Run();
+namespace ds {
 
-	virtual void Update() = 0;
-	virtual void Render() = 0;
+	class DUST_API Dust {
+	public:
+		Dust(const char *title, int windowWidth, int windowHeight, bool fullscreen);
+		virtual ~Dust();
 
-private:
-	GLFWwindow *window { nullptr };
-	int windowWidth { 0 };
-	int windowHeight { 0 };
-};
+		bool ShouldClose();
 
+		void BeingFrame();
+		void EndFrame();
+
+
+	private:
+		GLFWwindow *window { nullptr };
+		int windowWidth { 0 };
+		int windowHeight { 0 };
+	};
+}
 #endif //DUST_LIBRARY_H
