@@ -21,8 +21,7 @@ add_library(dust SHARED
         include/dust.h
         src/ds_graphics.cpp
         include/ds_graphics.h
-        src/ds_containers.cpp
-        include/ds_containers.h)
+)
 
 add_custom_command(TARGET dust POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy

@@ -8,10 +8,12 @@
 #define DUST_API __declspec(dllexport)
 
 #include <cstdint>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
-
-#include "ds_containers.h"
 
 namespace ds {
 
@@ -43,7 +45,7 @@ namespace ds {
     private:
         uint32_t index;
         uint32_t ubo;
-        ds::TempArray<char> buffer;
+        std::vector<char> buffer;
     };
 
 
@@ -71,7 +73,9 @@ namespace ds {
     class DUST_API Texture {
     public:
         Texture();
-        Texture(const char *filename);
+        Texture(std::string filename);
+
+        void Initialize(std::string filename);
         void Initialize(void *data, int width, int height, int channels);
 
         void Bind();
@@ -83,10 +87,35 @@ namespace ds {
         int32_t height;
     };
 
-    struct Vertex {
+    class Vertex {
+    public:
         glm::vec3 position;
         glm::vec3 normal;
         glm::vec2 uvs;
+    };
+
+    class Material {
+    public:
+        float Ns;
+        glm::vec3 Ka;
+        glm::vec3 Kd;
+        glm::vec3 Ks;
+        float Ni;
+        float d;
+        int illumType;
+
+        std::unique_ptr<Texture> map_Kd;
+        std::unique_ptr<Texture> map_d;
+        std::unique_ptr<Texture> map_Disp;
+        std::unique_ptr<Texture> map_Ka;
+
+    };
+
+    class Submesh {
+    public:
+        std::vector<Vertex> vertices;
+        std::vector<std::string> mtlNames;
+        std::vector<uint32_t> mtlOffsets;
     };
 
     class DUST_API Mesh {
@@ -94,18 +123,15 @@ namespace ds {
         Mesh() = default;
         ~Mesh() = default;
 
-        Vertex *Vertices();
-        int Size();
-        int ByteSize();
-
-        void LoafObjFile(const char *filename);
+        size_t SubmeshesCount();
+        std::vector<Submesh>& GetSubmeshes();
+        std::unordered_map<std::string, Material>& GetMaterials();
+        void LoafObjFile(std::string filename);
+        void LoadMtlFile(std::string filename);
     private:
-        TempArray<Vertex> vertices;
+        std::vector<Submesh> submeshes;
+        std::unordered_map<std::string, Material> materials;
     };
-
-
-
-
 }
 
 
